@@ -6,8 +6,15 @@ var MoveView = require('./MoveView');
 var Monsters = require('./Data/Monsters');
 var Moves = require('./Data/Moves');
 var Items = require('./Data/Items');
+var Sound = require('react-native-sound');
 
-
+var click = new Sound('Click.wav', Sound.MAIN_BUNDLE, (error) => {
+  if (error) {
+    console.log('failed to load the sound', error);
+  } else { // loaded successfully 
+    
+  }
+});
 
 var {
   AppRegistry,
@@ -18,6 +25,7 @@ var {
   TouchableHighlight,
   Animated,
   Easing,
+  ScrollView
 
 } = React;
 
@@ -40,12 +48,23 @@ var Battler = React.createClass({
       playerAttacking: false,
       enemyAttacking: false,
       currentMove: {},
+      def: "",
+      playerTurns: 0,
+      enemyTurns: 0,
+      isCriticalHit: false,
+      isCriticalMiss: false, 
       expToGo: (Monsters.player.experienceTotal - Monsters.player.experienceGained),
+      song: null,
     }
 
   },
 
+  componentWillMount() {
+      this.playSound();
+  },
+
    componentDidMount() {
+
       Animated.timing(       
         this.state.fadeAnim, 
         {
@@ -57,148 +76,346 @@ var Battler = React.createClass({
       setTimeout(() => this.battleSequence(), 4000);
           
     },
+ 
+  playSound: function() {
+    if (this.state.song) {
+      this.state.song.stop();
+      this.setState({song: null});
+    } else {
+      this.state.song = new Sound('fightSong.mp3', Sound.MAIN_BUNDLE, (error) => {
+      if (error) {
+        console.log('failed to load the sound', error);
+      } else { // loaded successfully 
+        this.state.song.play((success) => {
+      if (success) {
+        console.log('successfully finished playing');
+      } else {
+        console.log('playback failed due to audio decoding errors');
+      }
+    });
+      }
+    });
 
+     
+    }
+  },
+
+  playClick: function() {
+      click.play((success) => {
+        if (success) {
+          console.log('successfully finished playing');
+        } else {
+          console.log('playback failed due to audio decoding errors');
+        }
+      });
+  },
    
   battleSequence: function() {
       var random = Math.floor(Math.random() * Monsters.enemy.length);
       // determine enemy monster monsterRandomizer(player)
       this.setState({enemy: Monsters.enemy[random]});
+      Monsters.currentEnemy = this.state.enemy;
       this.setState({player: Monsters.player});
       this.state.enemy.currentHp = this.state.enemy.maxHp;
       //Monster stat randomizer
-      this.statRandomizer();
+      
       //hide monsters, show enemy monster with animation, 
-      this.setState({message: "lv. " + this.state.enemy.level + " " +this.state.enemy.name + " has attacked"});
+      this.setState({message: "A " + this.state.enemy.name + " has attacked"});
       //message "who should fight?"
-      setTimeout(() => {this.setState({message: "Who Should Fight?"})}, 4000);
-      setTimeout(() => {this.setState({moveButtons: "displayFighter" })}, 4000);
+      // setTimeout(() => {this.setState({message: "Who Should Fight?"})}, 4000);
+      setTimeout(() => {this.setPlayer()}, 4000);
       //display buttons for option
       
       
   },
 
-  statRandomizer: function() {
-    var random = Math.floor(Math.random() * 6);
-    
-    
-    this.state.enemy.level = this.state.player.level + random
-   
-    
-    this.statSetter(this.state.enemy)
-    
-  },
-
-  statSetter: function(character) {
-    character.strength = Math.round(character.level * character.strength * 4.8)
-    character.maxHp = Math.round(character.level * character.defense * 4.8) + (Math.pow(character.level, 2) * 10)
-    character.elemental = Math.round(character.level * character.elemental * 4.8)
-    character.speed = Math.round(character.level * character.speed * 4.8)
-    character.evasion = Math.round(character.level * character.evasion * 4.8)
-    character.currentHp = character.maxHp
-  },
-
- 
 
   displayCharButtons: function() {
-    if (this.state.moveButtons == "displayFighter") {
+
+    if (this.state.moveButtons == "displayMoves") {
       return <View style={styles.moveView}>
-     <MoveView move={"Lv. " + this.state.player.level + " " + this.state.player.name} press={this.setPlayer} />
-     <MoveView move={"Lv. " + this.state.player.monster.level + " " + this.state.player.monster.name} press={this.setMonster}/>
+      <MoveView move={"Back"} press={() => this.displayOptions("options")} />
+     <MoveView move={this.state.player.moves[0].name} press={() => this.defenderTurn(this.state.player.moves[0])} />
+     <MoveView move={this.state.player.moves[1].name} press={() => this.defenderTurn(this.state.player.moves[1])} />
+     <MoveView move={this.state.player.moves[2].name} press={() => this.defenderTurn(this.state.player.moves[2])} />
+     <MoveView move={this.state.player.moves[3].name} press={() => this.defenderTurn(this.state.player.moves[3])} />
      </View>
-    } else if (this.state.moveButtons == "displayMoves") {
+   } else if (this.state.moveButtons == "defender") {
       return <View style={styles.moveView}>
-     <MoveView move={this.state.currentPlayer.moves[0].name} press={() => this.calcDamage(this.state.currentPlayer.moves[0], true)} />
-     <MoveView move={this.state.currentPlayer.moves[1].name} press={() => this.calcDamage(this.state.currentPlayer.moves[1], true)} />
-     <MoveView move={this.state.currentPlayer.moves[2].name} press={() => this.calcDamage(this.state.currentPlayer.moves[2], true)} />
-     <MoveView move={this.state.currentPlayer.moves[3].name} press={() => this.calcDamage(this.state.currentPlayer.moves[3], true)} />
+     <MoveView move={"Defend"} press={() => this.defending(10)} />
+     <MoveView move={"Dodge"} press={() => this.defending(6)} />
+     <MoveView move={"Counter Attack"} press={() => this.defending(4)} />
      </View>
+   } else if (this.state.moveButtons == "displayOptions") {
+      return <View style={styles.moveView}>
+     <MoveView move={"Attack"} press={() => this.displayOptions("attack")} />
+     <MoveView move={"Items"} press={() => this.displayOptions("items")} />
+     <MoveView move={"Run"} press={() => this.runAway()} />
+     </View>
+   } else if (this.state.moveButtons == "displayItems") {
+       return <View style={{flex: 2}}>
+       <MoveView move={"Back"} press={() => this.displayOptions("options")} />
+       <ScrollView style={{flex: 2}}>
+       {this.state.player.items.map((v, i) => <MoveView move={this.state.player.items[i].name} key={i} press={() => this.applyItem(this.state.player.items[i], i)} />)}
+       </ScrollView>
+       </View>
+     
    } else {
 
    }
   },
 
+
+
+  applyItem: function(item, index) {
+     if(item.health) {
+        this.state.player.currentHp = this.state.player.currentHp + item.health
+     } else if (item.turns) {
+      
+       this.state.enemyTurns = this.state.enemyTurns + item.turns;
+     } else if (item.stats){
+        this.defenderTurn(item.move, true);
+     }
+
+     if (item.move){
+        this.defenderTurn(item.move, true);
+        this.state.player.items.splice(index,1);
+     } else {
+    this.state.player.items.splice(index,1);
+     this.setState({moveButtons: ""});
+     this.enemyTurn();
+     }
+  },
+
+  displayOptions: function(button) {
+   
+   if (button == "attack") {
+     this.setState({message: ""});
+     this.setState({moveButtons: "displayMoves"});
+   } else if (button == "items") {
+      this.setState({message: ""});
+      this.setState({moveButtons: "displayItems"});
+   } else {
+      this.setState({message: "What do you want to do?"})
+      this.setState({moveButtons: "displayOptions"});
+   }
+
+  },
+
   setPlayer: function() {
-     this.statSetter(this.state.player)
-     this.setState({currentPlayer: this.state.player});
-     
-     this.firstMove(this.state.currentPlayer.speed, this.state.enemy.speed);
-     if (this.state.playerTurn) {
+    this.setState({currentPlayer: true});
+     if (this.state.player.stats[5] > this.state.enemy.stats[5]) {
        this.playerTurn();
      } else {
        this.enemyTurn();
      }
   },
 
-  setMonster: function() {
-    this.statSetter(this.state.player.monster)
-     this.setState({currentPlayer: this.state.player.monster});
-     this.firstMove(this.state.currentPlayer.speed, this.state.enemy.speed);
-     if (this.state.playerTurn) {
-       this.playerTurn();
-     } else {
-       this.enemyTurn();
-     }
-
-  },
 
   playerTurn: function() {
-     this.setState({currentDefender: this.state.enemy});
+    //start of players turn
+    if (this.state.playerTurns > 0) {
+      this.setState({playerTurns: this.state.playerTurns - 1 });
+      this.setState({message: "You are frozen"})
+      setTimeout(() => {this.enemyTurn()}, 2000);
+    } else {
      {this.setState({message: "What do you want to do?"})}
-     //displayMoves()
-     this.setState({moveButtons: "displayMoves"});
+     //displayMoves
      
+     this.setState({moveButtons: "displayOptions"});
+
      //wait for input of move
+   }
      
   },
 
-  calcDamage: function(move, player) {
-    this.setState({currentMove: move});
-    this.setState({moveButtons: ""});
-    var attack = 0;
-    console.log(Math.floor(Math.random() * this.state.currentPlayer.level * 5));
-    //damage calculation
-    if (player) {
-      attack = Math.round((move.power * 1.33)) * (this.state.currentPlayer.strength) + (Math.floor(Math.random() * this.state.currentPlayer.level * 5))
+  checkForRoll: function(roll, stats) {
+
+      var results = (Math.floor((Math.random() * roll) + 1));
+      if (results == 20 && roll == 20) {
+        this.setState({isCriticalHit: true});
+      }
+      if (results == 1 && roll == 20) {
+        this.setState({isCriticalMiss: true});
+      }
+      if (stats) {
+        return results + stats;
+      } else {
+      return results
+     }
+  },
+
+  defenderTurn: function(move,) {
+    // AI defender decides move and passes it to damage calculator
+    
+    var random = Math.random();
+
+    
+    if (random > .50) {
+      this.calcDamage(move, 10);
+    } else if (random > .20) {
+      this.calcDamage(move, 6);
     } else {
-      attack = Math.round((move.power * 1.33)) * (this.state.enemy.strength) + (Math.floor(Math.random() * this.state.enemy.level * 5))    
+      this.calcDamage(move, 4);
     }
 
-    var life = this.state.currentDefender.currentHp - Math.round(attack / 1.5);
-     //determine stats of move based on attacker
-     //run move attack(move, attackee)
-     //make changes to stats
-    var damage = this.state.currentDefender.currentHp - life;
-    
-    
-    if (player) {
-       this.playerAttack();
-       setTimeout(() => this.setState({playerAttacking: false}), 1250);
-       
-    } else {
-       this.enemyAttack();
-       setTimeout(() => this.setState({enemyAttacking: false}), 1250);
-      }
+  
+      
+  },
 
-    this.setState({message: move.name + " is used"});
-    setTimeout(() => {this.setState({message: this.state.currentDefender.name + " recieved " + damage + " damage"})}, 1500);
-    this.state.currentDefender.currentHp = life;
-    if (this.state.currentDefender.currentHp < 0) {
-      this.state.currentDefender.currentHp = 0;
+  defendResults: function(damage, defense, roll) {
+      if (defense == "defend") {
+        var d = this.checkForRoll(4);
+        d = d + roll;
+        var total = damage - d;
+        if (total < 0) {
+          return 0;
+        } else {
+          return damage;
+        }
+        
+      } 
+      if (defense == "dodge") {
+        return 0;
+      } 
+  },
+
+  calcDamage: function(move, defense) {
+    //player is attacking, enemy is defending
+    this.setState({currentMove: move});
+    this.setState({moveButtons: ""});
+    
+
+        var attack = 0;
+
+        if (defense == 10) {
+          this.setState({def: "defend"});
+        } else if (defense == 6) {
+          this.setState({def: "dodge"});
+        } else {
+          this.setState({def: "counterAttack"});
+        }
+        //check for hit
+        var hit = this.checkForRoll(20);
+        var d = this.checkForRoll(defense);
+        d = d + Math.floor(this.state.player.stats[1] / 2);
+   
+      
+        this.setState({message: "" + this.state.enemy.name + " is trying to " + this.state.def });
+        setTimeout(() => this.setState({message: "You must have an accuracy of " + d + " or better to ignore the " + this.state.def }), 1250);
+        setTimeout(() => this.setState({message: "You attack with accuracy of " + hit  }), 3000);
+        if (hit >= d) {
+          if (this.state.isCriticalHit) {
+             var a = this.checkForRoll(move.dmgRoll);
+             var b = this.checkForRoll(move.dmgRoll);
+             attack = a + b + move.bonus + Math.floor(this.state.player.stats[0] / 2);
+             this.setState({isCriticalHit: false});
+          } else {
+          attack = this.checkForRoll(move.dmgRoll) + move.bonus + Math.floor(this.state.player.stats[0] / 2);
+          }
+
+        } else if (this.state.def == "counterAttack") {
+          // counter attack
+
+        } else {
+          attack = this.defendResults(this.checkForRoll(move.dmgRoll) + move.bonus + Math.floor(this.state.player.stats[0] / 2), this.state.def, Math.floor(this.state.enemy.stats[1] / 2));
+        }
+        
+        setTimeout(() => this.playerAttack(), 3000);
+        setTimeout(() => this.setState({playerAttacking: false}), 4200); 
+        setTimeout(() => {this.setState({message: this.state.enemy.name + " recieved " + attack + " damage"})}, 5500);
+
+        var life = this.state.enemy.currentHp - attack;
+    
+    
+        setTimeout(() => this.checkForDeath(life, this.state.enemy), 4000);
+
+    
+
+  },
+
+  defending: function(defense) {
+        //player is defending, enemy is attacking
+        this.setState({moveButtons: ""});
+
+        // random AI attack selection
+
+           var random = Math.random();
+           var move = {};
+        
+        if (random > .75) {
+          move = this.state.enemy.moves[0];
+        } else if (random > .50) {
+          move = this.state.enemy.moves[1];
+        } else if (random > .25) {
+          move = this.state.enemy.moves[2];
+        } else {
+          move = this.state.enemy.moves[3];
+        }
+
+        var attack = 0;
+
+        
+        if (defense == 10) {
+          this.setState({def: "defend"});
+        } else if (defense == 6) {
+          this.setState({def: "dodge"});
+        } else {
+          this.setState({def: "counterAttack"});
+        }
+     
+          
+        //check for hit
+        var hit = this.checkForRoll(20);
+        // check defense roll
+        var d = this.checkForRoll(defense);
+        d = d + Math.floor(this.state.enemy.stats[1] / 2);
+        
+        setTimeout(() => this.setState({message: this.state.enemy.name + " must have an accuracy of " + d + " or better to ignore the " + this.state.def }), 1250);
+        setTimeout(() => this.setState({message: this.state.enemy.name  + " attacks with accuracy of " + hit }), 3000);
+        if (hit >= d) {
+          if (this.state.isCriticalHit) {
+             var a = this.checkForRoll(move.dmgRoll);
+             var b = this.checkForRoll(move.dmgRoll);
+             attack = a + b + move.bonus + this.state.enemy.stats[0];
+             this.setState({isCriticalHit: false});
+          } else {
+          attack = this.checkForRoll(move.dmgRoll, this.state.enemy.stats[0]) + move.bonus 
+          }
+
+        } else if (this.state.def == "counterAttack") {
+          // counter attack
+
+        } else {
+          console.log("successfully defended");
+          attack = this.defendResults(this.checkForRoll(move.dmgRoll) + move.bonus + Math.floor(this.state.enemy.stats[0] / 2), this.state.def, Math.floor(this.state.player.stats[1] / 2));
+        }
+     
+      setTimeout(() => this.enemyAttack(), 3000);
+      setTimeout(() => this.setState({enemyAttacking: false}), 4200);  
+      setTimeout(() => {this.setState({message: "You recieved " + attack + " damage"})}, 5500); 
+      var life = this.state.player.currentHp - attack;
+      setTimeout(() => this.checkForDeath(life, this.state.player), 4000);
+  },
+
+  checkForDeath: function(life, defender) {
+    defender.currentHp = life;
+      if (defender.currentHp < 0) {
+      defender.currentHp = 0;
     } 
 
-    if (this.state.currentDefender.currentHp <= 0){
-      setTimeout(() => this.fightOver(), 2000);
+    if (defender.currentHp <= 0){
+      setTimeout(() => this.fightOver(defender), 3000);
        
     } else {
 
-        if (this.state.currentDefender == this.state.currentPlayer) {
+        if (defender == this.state.player) {
           setTimeout(() => this.playerTurn(), 3000);
         } else {
           setTimeout(() => this.enemyTurn(), 3000);
         } 
 
     }
-
   },
 
 
@@ -223,68 +440,41 @@ var Battler = React.createClass({
   },
 
   enemyTurn: function() {
-    this.setState({currentDefender: this.state.currentPlayer});
+    if (this.state.enemyTurns > 0) {
+      this.setState({enemyTurns: this.state.enemyTurns - 1 });
+      this.setState({message: this.state.enemy.name + " cant move"})
+      setTimeout(() => {this.playerTurn()}, 2000);
+    } else {
     this.setState({message: this.state.enemy.name + "'s turn"});
     
 
-    this.setState({moveButtons: ""});
+    setTimeout(() => this.setState({moveButtons: "defender"}), 2000);
       // determine move
-    var random = Math.random();
-
-    
-    if (random > .75) {
-      setTimeout(() => this.calcDamage(this.state.enemy.moves[0], false), 2000);
-    } else if (random > .50) {
-      setTimeout(() => this.calcDamage(this.state.enemy.moves[1], false), 2000);
-    } else if (random > .25) {
-      setTimeout(() => this.calcDamage(this.state.enemy.moves[2], false), 2000);
-    } else {
-      setTimeout(() => this.calcDamage(this.state.enemy.moves[3], false), 2000);
     }
 
-      // determine stats of move based on attacker
-      // run move attack(move, attackee)
-      // switch turns
+  },
+
+  runAway: function() {
+      this.setState({moveButtons: ""});
+      {this.setState({message: "You ran away"})}
+      setTimeout(() => {this.props.navigator.pop()}, 1500);
+      this.playSound();
   },
 
 
-  fightOver: function() {
-      this.state.player.experienceGained = 200
+  fightOver: function(defender) {
+      
       
       this.setState({moveButtons: ""});
-      {this.setState({message: " " + this.state.currentDefender.name + " has died"})}
+      {this.setState({message: " " + defender.name + " has died"})}
       //display message of who died
       //if player loser, message: player must heal 
       // if player winner, congratulations! you defeated a "enemy"
-
-      setTimeout(() => {this.props.navigator.push({name: 'experience'})}, 500);
-      // experienceScreen()
+      this.playSound();
+      setTimeout(() => {this.props.navigator.push({name: 'experience', index: 3})}, 500);
+      // experienceScreen
   },
 
-  experienceScreen: function() {
-      //show experince view
-      // determine experinceGained(enemy)
-      // apply experince to player and monster 1:2 ratio
-      // determine itemGained(enemy)
-      // message "blah blah item was found" or if null "no item was dropped"
-  },
-
-  experinceGained: function() {
-      //formula from monsterId
-      //return experience number
-  },
-
-  itemGained: function() {
-      // formula from monsterId
-      // return itemId or null
-  },
-
-
-  firstMove: function(pSpeed, eSpeed) {
-     if (pSpeed >= eSpeed) {
-       this.setState({playerTurn: true});
-     }  
-  },
 
   renderEnemyAvatar: function() {
      if (this.state.enemy.avatar) {
@@ -293,11 +483,11 @@ var Battler = React.createClass({
         <View style={styles.infoFieldE}>
 
                       <Text style={styles.infoFieldText}>
-                          Lv. {this.state.enemy.level}     {this.state.enemy.name}
+                              {this.state.enemy.name}
                       </Text>
 
                       <Text style={styles.infoFieldText}>
-                          Hp: {this.state.enemy.currentHp}/ {this.state.enemy.maxHp}
+                          
                       </Text>
 
                       <GameEngine player={this.state.enemy}/>
@@ -364,6 +554,18 @@ var Battler = React.createClass({
 
   },
 
+  messageBox: function() {
+      if(this.state.message == "") {
+
+      } else {
+        return <View style={styles.chatBox}>
+               <Text style={styles.buttonText}>
+                  {this.state.message}
+               </Text>
+            </View>
+      }
+  },
+
   renderPlayerAvatar: function() {
       if (this.state.currentPlayer) {
         return <View style={styles.playerField}>
@@ -372,29 +574,26 @@ var Battler = React.createClass({
                   transform: [{translateX: this.state.attackMove }],
                   width: 115,
                   height: 115,
-                  
-                  
-                  right: 40,
-                 
+
                   alignSelf: 'flex-end',
-                  justifyContent: 'flex-start'}}
+                  justifyContent: 'center'}}
                   source={{uri: 'playerHead.png'}}
-                  resizeMode={'contain'}>
+                  resizeMode={'stretch'}>
                   {this.enemyAttackImage()}
                 </Animated.Image>
 
                 <View style={styles.infoFieldP}>
 
                       <Text style={styles.infoFieldText}>
-                          Lv. {this.state.currentPlayer.level}     {this.state.currentPlayer.name}
+                             {this.state.player.name}
                       </Text>
 
                       <Text style={styles.infoFieldText}>
-                          Hp: {this.state.currentPlayer.currentHp}/ {this.state.currentPlayer.maxHp}
+                          Hp: {this.state.player.currentHp}/ {this.state.player.maxHp}
                       </Text>
 
                       
-                      <GameEngine player={this.state.currentPlayer}/>
+                      <GameEngine player={this.state.player}/>
                       
                     
                 </View>
@@ -421,7 +620,7 @@ var Battler = React.createClass({
              
               <Image
               style={styles.image}
-              source={{uri: 'meteor.jpg'}}>  
+              source={{uri: 'https://illiaworld.files.wordpress.com/2011/12/forest.png'}}>  
 
 
                   {this.renderEnemyAvatar()}
@@ -431,9 +630,9 @@ var Battler = React.createClass({
               </Image>
 
               <View style={{backgroundColor:'black', height: 10, flexDirection: 'row'}}>
-                <View style={{flex: Monsters.player.experienceGained, backgroundColor: 'blue',borderWidth: 1, borderRadius: 5,}}>
+                <View style={{flex: Monsters.player.experienceGained, backgroundColor: 'blue'}}>
                 </View>
-                <View style={{flex: this.state.expToGo, backgroundColor: 'gray'}}>
+                <View style={{flex: this.state.expToGo, backgroundColor: 'rgba(255,0,0,0.7)'}}>
                 </View>
 
               </View>
@@ -442,14 +641,10 @@ var Battler = React.createClass({
             
 
           <View style={{flex: 1, justifyContent: "center", backgroundColor: 'black'}}>
+            {this.messageBox()}
             
-            <View style={styles.chatBox}>
-               <Text style={styles.buttonText}>
-                  {this.state.message}
-               </Text>
-            </View>
             
-           
+              
               {this.displayCharButtons()}
            
 
@@ -518,7 +713,7 @@ var styles = StyleSheet.create({
     borderRadius: 5
   },
    infoFieldP: {
-    
+    shadowColor: "black",
     backgroundColor: 'rgba(0,0,0,.3)',
     width: 200,
     height: 80,
@@ -536,6 +731,7 @@ var styles = StyleSheet.create({
 
 
   infoFieldText: {
+    shadowColor: "black",
     flex: 1.5,
     color: 'white',
     left: 5,

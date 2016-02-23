@@ -2,11 +2,14 @@
 
 var React = require('react-native');
 var Battler = require('./Battler');
+var Glossary = require('./Glossary');
 var Radar = require('./Radar');
 var Menu = require('./Menu');
 var GameEngine = require('./GameEngine');
 var Experience = require('./Experience');
 var OpenScreen = require('./OpenScreen');
+var Firebase = require('firebase');
+var Monsters = require('./Data/Monsters');
 
 var {
   AppRegistry,
@@ -19,12 +22,20 @@ var ROUTES = {
     battler: Battler,
     menu: Menu,
     experience: Experience,
-    openScreen: OpenScreen
+    openScreen: OpenScreen,
+    glossary: Glossary,
 };
 
 var Main = React.createClass({
 
 
+componentDidMount() {
+
+        var myFirebaseRef = new Firebase("https://geomonsterapp.firebaseio.com/");
+         myFirebaseRef.set({
+           player: Monsters.player
+        });
+},
 
   renderScene: function(route, navigator) {
     var Component = ROUTES[route.name];
@@ -38,8 +49,8 @@ var Main = React.createClass({
         style={styles.container}
         initialRoute={{name: 'battler', index: 0}}
         renderScene={this.renderScene}
-        configureScene={() => Navigator.SceneConfigs.HorizontalSwipeJump}/>
-      
+        configureScene={() => Navigator.SceneConfigs.FloatFromRight}/>
+        
       )
   } 
 

@@ -19,13 +19,59 @@ var Menu = React.createClass({
      this.props.navigator.pop();
   },
 
+  glossaryButton: function() {
+     this.props.navigator.push();
+  },
+
+  volumeButton: function() {
+      
+  },
+
+  profileButton: function() {
+      
+  },
+
+  itemsButton: function() {
+      
+  },
+
+
   render: function(){
     
       return (
         <View style={styles.container}>
-          <Text>
-            Im in the Menu
-          </Text>
+          
+          <TouchableHighlight
+            style={styles.buttons}
+            onPress={this.glossaryButton}>
+               <Text style={styles.buttonText}>
+                  Glossary
+               </Text>
+          </TouchableHighlight>
+
+          <TouchableHighlight
+            style={styles.buttons}
+            onPress={this.itemsButton}>
+               <Text style={styles.buttonText}>
+                  Items
+               </Text>
+          </TouchableHighlight>
+
+          <TouchableHighlight
+            style={styles.buttons}
+            onPress={this.volumeButton}>
+               <Text style={styles.buttonText}>
+                  Volume
+               </Text>
+          </TouchableHighlight>
+
+          <TouchableHighlight
+            style={styles.buttons}
+            onPress={this.profileButton}>
+               <Text style={styles.buttonText}>
+                  Profile
+               </Text>
+          </TouchableHighlight>
 
           <TouchableHighlight
             style={styles.buttons}
@@ -47,6 +93,7 @@ var styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
+    backgroundColor:'black',
     alignItems: 'center'
     
   },
@@ -63,7 +110,7 @@ var styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#f33333',
     height: 50,
-    width: 100,
+    width: 200,
     margin: 10,
     position: "relative",
     justifyContent: "center",

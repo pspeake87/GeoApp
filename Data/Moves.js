@@ -5,7 +5,8 @@ module.exports = {
    animationurl: {uri: 'fireball.gif'},
    type: "Earth",
    effects: "",
-   accuracy: .95
+   dmgRoll: 8,
+   bonus: 2
  },
  fireball: {
    name: "Netting",
@@ -13,7 +14,8 @@ module.exports = {
    animationurl: {uri: 'fireball.gif'},
    type: "Physical",
    effects: "lost of 2 turns",
-   accuracy: .95
+   dmgRoll: 8,
+   bonus: 2
  },
  mudslide: {
    name: "Mudslide",
@@ -21,7 +23,8 @@ module.exports = {
    animationurl: {uri: 'fireball.gif'},
    type: "Earth",
    effects: "",
-   accuracy: .95
+   dmgRoll: 8,
+   bonus: 2
  },
  fissure: {
    name: "Fissure",
@@ -29,7 +32,8 @@ module.exports = {
    animationurl: {uri: 'fireball.gif'},
    type: "Earth",
    effects: "",
-   accuracy: .95
+   dmgRoll: 8,
+   bonus: 2
  },
  eatlead: {
    name: "Eat Lead",
@@ -37,7 +41,8 @@ module.exports = {
    animationurl: {uri: 'fireball.gif'},
    type: "Physical",
    effects: "",
-   accuracy: .95
+   dmgRoll: 8,
+   bonus: 2
  },
  cherrybomb: {
    name: "Cherry Bomb",
@@ -45,7 +50,8 @@ module.exports = {
    animationurl: {uri: 'lightning.gif'},
    type: "Physical",
    effects: "",
-   accuracy: .95
+   dmgRoll: 8,
+   bonus: 2
  },
  burnt: {
    name: "Burnt",
@@ -53,7 +59,8 @@ module.exports = {
    animationurl: {uri: 'fire.gif'},
    type: "Fire",
    effects: "",
-   accuracy: .95
+   dmgRoll: 8,
+   bonus: 2
  },
  lava: {
    name: "Lava",
@@ -61,7 +68,8 @@ module.exports = {
    animationurl: {uri: 'fire.gif'},
    type: "Fire",
    effects: "",
-   accuracy: .95
+   dmgRoll: 8,
+   bonus: 2
  },
  waterfall: {
    name: "WaterFall",
@@ -69,7 +77,8 @@ module.exports = {
    animationurl: {uri: 'fire.gif'},
    type: "Water",
    effects: "",
-   accuracy: .95
+   dmgRoll: 8,
+   bonus: 2
  },
  acidrain: {
    name: "Acid Rain",
@@ -77,7 +86,8 @@ module.exports = {
    animationurl: {uri: 'fireball.gif'},
    type: "Water",
    effects: "toxic",
-   accuracy: .95
+   dmgRoll: 8,
+   bonus: 2
  },
  riptide: {
    name: "Riptide",
@@ -85,7 +95,8 @@ module.exports = {
    animationurl: {uri: 'fire.gif'},
    type: "Water",
    effects: "",
-   accuracy: .95
+   dmgRoll: 8,
+   bonus: 2
  },
  waterblast: {
    name: "WaterBlast",
@@ -93,7 +104,8 @@ module.exports = {
    animationurl: {uri: 'fire.gif'},
    type: "Water",
    effects: "",
-   accuracy: .95
+   dmgRoll: 8,
+   bonus: 2
  },
  tornado: {
    name: "Tornado",
@@ -101,7 +113,8 @@ module.exports = {
    animationurl: {uri: 'fire.gif'},
    type: "Wind",
    effects: "",
-   accuracy: .95
+   dmgRoll: 8,
+   bonus: 2
  },
  lightning: {
    name: "Lightning",
@@ -109,7 +122,8 @@ module.exports = {
    animationurl: {uri: 'lightning.gif'},
    type: "Wind",
    effects: "",
-   accuracy: .95
+   dmgRoll: 8,
+   bonus: 2
  }
 
 }

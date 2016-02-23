@@ -22,6 +22,11 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
+		841A6ED71C72833600C24D84 /* libRNSound.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 841A6ED61C72831A00C24D84 /* libRNSound.a */; };
+		841A6EDF1C728D5000C24D84 /* fightSong.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 841A6EDE1C728D5000C24D84 /* fightSong.mp3 */; };
+		841A6EE11C72F15200C24D84 /* Click.wav in Resources */ = {isa = PBXBuildFile; fileRef = 841A6EE01C72F15200C24D84 /* Click.wav */; };
+		841A6EE51C72F99F00C24D84 /* clicker.wav in Resources */ = {isa = PBXBuildFile; fileRef = 841A6EE41C72F99F00C24D84 /* clicker.wav */; };
+		841A6EE71C74EA2C00C24D84 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 841A6EE61C74EA2C00C24D84 /* GameKit.framework */; };
 		843F4DD21C55FB5E0082187A /* libRCTMapboxGL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 843F4DCF1C55FB140082187A /* libRCTMapboxGL.a */; };
 		843F4DD81C55FC5F0082187A /* Mapbox.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 843F4DD71C55FC5F0082187A /* Mapbox.bundle */; };
 		843F4DDA1C55FC8F0082187A /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 843F4DD91C55FC8F0082187A /* Settings.bundle */; };
@@ -114,6 +119,13 @@
 			remoteGlobalIDString = 58B5119B1A9E6C1200147676;
 			remoteInfo = RCTText;
 		};
+		841A6ED51C72831A00C24D84 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 841A6ED11C72831A00C24D84 /* RNSound.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 19825A1E1BD4A89800EE0337;
+			remoteInfo = RNSound;
+		};
 		843F4DCE1C55FB140082187A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 843F4DC91C55FB140082187A /* RCTMapboxGL.xcodeproj */;
@@ -152,6 +164,11 @@
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
+		841A6ED11C72831A00C24D84 /* RNSound.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNSound.xcodeproj; path = "../node_modules/react-native-sound/RNSound.xcodeproj"; sourceTree = "<group>"; };
+		841A6EDE1C728D5000C24D84 /* fightSong.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = fightSong.mp3; sourceTree = "<group>"; };
+		841A6EE01C72F15200C24D84 /* Click.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Click.wav; sourceTree = "<group>"; };
+		841A6EE41C72F99F00C24D84 /* clicker.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = clicker.wav; sourceTree = "<group>"; };
+		841A6EE61C74EA2C00C24D84 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		843F4DC91C55FB140082187A /* RCTMapboxGL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTMapboxGL.xcodeproj; path = "../node_modules/react-native-mapbox-gl/ios/RCTMapboxGL.xcodeproj"; sourceTree = "<group>"; };
 		843F4DD71C55FC5F0082187A /* Mapbox.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Mapbox.bundle; path = "../node_modules/react-native-mapbox-gl/ios/RCTMapboxGL/Mapbox.bundle"; sourceTree = "<group>"; };
 		843F4DD91C55FC8F0082187A /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = "../node_modules/react-native-mapbox-gl/ios/RCTMapboxGL/Settings.bundle"; sourceTree = "<group>"; };
@@ -178,6 +195,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				841A6ED71C72833600C24D84 /* libRNSound.a in Frameworks */,
 				843F4DEC1C55FD1B0082187A /* libz.tbd in Frameworks */,
 				843F4DEA1C55FD130082187A /* libsqlite3.tbd in Frameworks */,
 				843F4DE81C55FD0B0082187A /* libc++.tbd in Frameworks */,
@@ -188,6 +206,7 @@
 				843F4DDE1C55FCDD0082187A /* GLKit.framework in Frameworks */,
 				843F4DDC1C55FCCF0082187A /* CoreTelephony.framework in Frameworks */,
 				843F4DD21C55FB5E0082187A /* libRCTMapboxGL.a in Frameworks */,
+				841A6EE71C74EA2C00C24D84 /* GameKit.framework in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
 				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
@@ -310,6 +329,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				841A6ED11C72831A00C24D84 /* RNSound.xcodeproj */,
 				843F4DC91C55FB140082187A /* RCTMapboxGL.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
@@ -336,6 +356,10 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				841A6EE61C74EA2C00C24D84 /* GameKit.framework */,
+				841A6EE41C72F99F00C24D84 /* clicker.wav */,
+				841A6EE01C72F15200C24D84 /* Click.wav */,
+				841A6EDE1C728D5000C24D84 /* fightSong.mp3 */,
 				843F4DEB1C55FD1B0082187A /* libz.tbd */,
 				843F4DE91C55FD130082187A /* libsqlite3.tbd */,
 				843F4DE71C55FD0B0082187A /* libc++.tbd */,
@@ -361,6 +385,14 @@
 			children = (
 				13B07F961A680F5B00A75B9A /* GeoApp.app */,
 				00E356EE1AD99517003FC87E /* GeoAppTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		841A6ED21C72831A00C24D84 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				841A6ED61C72831A00C24D84 /* libRNSound.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -426,6 +458,14 @@
 						CreatedOnToolsVersion = 6.2;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
+					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = 88KUCESTNK;
+						SystemCapabilities = {
+							com.apple.GameCenter = {
+								enabled = 1;
+							};
+						};
+					};
 				};
 			};
 			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "GeoApp" */;
@@ -483,6 +523,10 @@
 				{
 					ProductGroup = 146834001AC3E56700842450 /* Products */;
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
+				},
+				{
+					ProductGroup = 841A6ED21C72831A00C24D84 /* Products */;
+					ProjectRef = 841A6ED11C72831A00C24D84 /* RNSound.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -564,6 +608,13 @@
 			remoteRef = 832341B41AAA6A8300B99B32 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		841A6ED61C72831A00C24D84 /* libRNSound.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNSound.a;
+			remoteRef = 841A6ED51C72831A00C24D84 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		843F4DCF1C55FB140082187A /* libRCTMapboxGL.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -593,7 +644,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				843F4DDA1C55FC8F0082187A /* Settings.bundle in Resources */,
+				841A6EE11C72F15200C24D84 /* Click.wav in Resources */,
 				843F4DD81C55FC5F0082187A /* Mapbox.bundle in Resources */,
+				841A6EE51C72F99F00C24D84 /* clicker.wav in Resources */,
+				841A6EDF1C728D5000C24D84 /* fightSong.mp3 in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 			);
@@ -702,6 +756,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEAD_CODE_STRIPPING = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -713,6 +769,8 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = GeoApp;
+				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -720,6 +778,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -730,6 +790,8 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = GeoApp;
+				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

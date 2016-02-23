@@ -37,11 +37,13 @@ var MoveView = React.createClass({
   },
 
   buttons: function() {
+     if (this.props.move) {
      return <TouchableHighlight style={styles.buttons} onPress={this.props.press}>
      <Text style={styles.buttonText}>
         {this.props.move}
      </Text>
      </TouchableHighlight>
+     }
   },
 
 
@@ -65,7 +67,7 @@ var styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#f33333',
     padding: 15,
-    margin: 10,
+    margin: 5,
     justifyContent: "center",
     alignItems: "center",
   },

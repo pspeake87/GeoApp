@@ -1,9 +1,18 @@
 'use strict';
 
-
+var Monsters = require('./Data/Monsters');
 var React = require('react-native');
 var Mapbox = require('react-native-mapbox-gl');
-var mapRef = 'mapRef'
+var mapRef = 'mapRef';
+var Sound = require('react-native-sound');
+
+var click = new Sound('clicker.wav', Sound.MAIN_BUNDLE, (error) => {
+  if (error) {
+    console.log('failed to load the sound', error);
+  } else { // loaded successfully 
+    
+  }
+});
 
 var {
   AppRegistry,
@@ -15,23 +24,38 @@ var {
 } = React;
 
 var Radar = React.createClass({
+    mixins: [Mapbox.Mixin],
+    
 
-   mixins: [Mapbox.Mixin],
+
   getInitialState() {
     return {
       zoom: 16,
       pos: 'unknown',
       annotations: [],
-      message: "",
+      message: "",    
+
      
     };  
   },
 
+
  
  menuButton: function() {
+   
    setTimeout(() => {this.props.navigator.push({name: 'menu'})}, 500);
+
  },
 
+playClick: function() {
+    click.play((success) => {
+      if (success) {
+        console.log('successfully finished playing');
+      } else {
+        console.log('playback failed due to audio decoding errors');
+      }
+    });
+},
 
  scanMonsters: function() {
    
@@ -41,7 +65,18 @@ var Radar = React.createClass({
         var annotations = [];
         this.state.message = "Scanning...";
         for (var i = 0; i<150; i++) {
-
+          if(i % 10 == 0) {
+            var pos = {
+                coordinates: [parseFloat((position.coords.latitude - 0.004) + 0.008 * Math.random()), parseFloat((position.coords.longitude - 0.004) + 0.008 * Math.random())],
+                type: "point",
+                annotationImage: {
+                  url: 'image!redcross.png',
+                  height: 15,
+                  width: 15
+                },
+                id: "Healer",
+             };
+          } else {
              var pos = {
                 coordinates: [parseFloat((position.coords.latitude - 0.004) + 0.008 * Math.random()), parseFloat((position.coords.longitude - 0.004) + 0.008 * Math.random())],
                 type: "point",
@@ -52,6 +87,7 @@ var Radar = React.createClass({
                 },
                 id: "Monster" + i,
              };
+           }
              annotations.push(pos);
         }
         this.setState({annotations});
@@ -92,16 +128,20 @@ var Radar = React.createClass({
       var loc = position;
       var markers = this.state.annotations;
       var found = false; 
-     
+      var healerfound = false;
 
     for (var i = 0; i < markers.length; i++) {
          
             if (distanceBetweenMarkers(markers[i].coordinates[0], markers[i].coordinates[1], loc.coords.latitude, loc.coords.longitude) < 25) {
-                found = true;
-                this.removeAnnotation(mapRef, 'Monster' + i);
+                if (markers[i].id == "Healer") {
+                    healerfound = true;
+                    break;
+                } else {
+                found = true;  
+                this.removeAnnotation(mapRef, markers[i].id);
                 markers.splice(i,1);
-
                 break;
+              }
             } 
              
      }
@@ -110,12 +150,20 @@ var Radar = React.createClass({
                         
             this.setState({message: "I found a monster!!"}); 
 
-            setTimeout(() => {this.setState({message: "Prepare for Battle..."})}, 1000);
-            setTimeout(() => {this.props.navigator.push({name: 'battler'})}, 3000);
+            setTimeout(() => {this.setState({message: "Prepare for an attack..."})}, 1000);
+            setTimeout(() => {this.props.navigator.push({name: 'battler', index: 2})}, 3000);
+        } else if (healerfound) {
+            this.setState({message: "I found some food!"});
+            Monsters.player.currentHp = Monsters.player.maxHp;
         } else {
             this.setState({message: "I found nothing"});
         }
     });
+ },
+
+ onPressButton: function() {
+    
+    this.playClick();
  },
 
   render: function(){
@@ -131,8 +179,8 @@ var Radar = React.createClass({
               showsUserLocation={true}
               userTrackingMode={this.userTrackingMode.follow}
               zoomLevel={this.state.zoom}
-              logoIsHidden={true}
-              attributionButtonIsHidden={true}
+              logoIsHidden={false}
+              attributionButtonIsHidden={false}
               accessToken={'pk.eyJ1IjoicHNwZWFrZTg3IiwiYSI6ImNpam5ybzQwZzAwcmh2YWx4Z2doanZsNzQifQ.bE66sEmpxKNzXwX6no3ixQ'}
               styleURL={'mapbox://styles/pspeake87/cijoqxspt000i8wkl2fnoixq8'}/>
               
@@ -150,7 +198,8 @@ var Radar = React.createClass({
                    <View style={styles.moveBox}>  
                       <TouchableHighlight
                           style={styles.buttons}
-                          onPress={this.scanMonsters}>
+                          onPress={this.scanMonsters}
+                          onHideUnderlay={this.onPressButton}>
                               <Text style={styles.buttonText}>
                                 Scan
                              </Text> 
@@ -158,7 +207,8 @@ var Radar = React.createClass({
 
                       <TouchableHighlight
                           style={styles.buttons}
-                          onPress={this.findMonster}>
+                          onPress={this.findMonster}
+                          onHideUnderlay={this.onPressButton}>
                              <Text style={styles.buttonText}>
                                Search
                              </Text>
@@ -166,7 +216,8 @@ var Radar = React.createClass({
 
                       <TouchableHighlight
                           style={styles.buttons}
-                          onPress={this.menuButton}>
+                          onPress={this.menuButton}
+                          onHideUnderlay={this.onPressButton}>
                              <Text style={styles.buttonText}>
                               Menu
                              </Text>
@@ -198,7 +249,7 @@ var styles = StyleSheet.create({
   },
   map: {
     flex: 3,
-    borderWidth: 15,
+    borderWidth: 5,
     
 
 

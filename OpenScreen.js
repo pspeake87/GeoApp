@@ -28,7 +28,7 @@ var OpenScreen = React.createClass({
       <View style={styles.container}>
         <TouchableWithoutFeedback
         style={{flex: 1}}
-        onPress={() => this.props.navigator.push({name: 'radar'})}>
+        onPress={() => this.props.navigator.push({name: 'radar', index: 1})}>
            <Image style={{flex: 1}}
            source={{uri: 'geoQuest.jpg'}}
            resizeMode={'stretch'}>

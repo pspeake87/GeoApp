@@ -6,7 +6,9 @@
     "start": "node node_modules/react-native/local-cli/cli.js start"
   },
   "dependencies": {
+    "firebase": "^2.4.0",
     "react-native": "^0.18.1",
-    "react-native-mapbox-gl": "^3.1.1"
+    "react-native-mapbox-gl": "^3.1.1",
+    "react-native-sound": "^0.7.3"
   }
 }
