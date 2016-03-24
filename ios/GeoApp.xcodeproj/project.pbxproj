@@ -23,10 +23,6 @@
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		841A6ED71C72833600C24D84 /* libRNSound.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 841A6ED61C72831A00C24D84 /* libRNSound.a */; };
-		841A6EDF1C728D5000C24D84 /* fightSong.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 841A6EDE1C728D5000C24D84 /* fightSong.mp3 */; };
-		841A6EE11C72F15200C24D84 /* Click.wav in Resources */ = {isa = PBXBuildFile; fileRef = 841A6EE01C72F15200C24D84 /* Click.wav */; };
-		841A6EE51C72F99F00C24D84 /* clicker.wav in Resources */ = {isa = PBXBuildFile; fileRef = 841A6EE41C72F99F00C24D84 /* clicker.wav */; };
-		841A6EE71C74EA2C00C24D84 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 841A6EE61C74EA2C00C24D84 /* GameKit.framework */; };
 		843F4DD21C55FB5E0082187A /* libRCTMapboxGL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 843F4DCF1C55FB140082187A /* libRCTMapboxGL.a */; };
 		843F4DD81C55FC5F0082187A /* Mapbox.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 843F4DD71C55FC5F0082187A /* Mapbox.bundle */; };
 		843F4DDA1C55FC8F0082187A /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 843F4DD91C55FC8F0082187A /* Settings.bundle */; };
@@ -165,10 +161,6 @@
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		841A6ED11C72831A00C24D84 /* RNSound.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNSound.xcodeproj; path = "../node_modules/react-native-sound/RNSound.xcodeproj"; sourceTree = "<group>"; };
-		841A6EDE1C728D5000C24D84 /* fightSong.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = fightSong.mp3; sourceTree = "<group>"; };
-		841A6EE01C72F15200C24D84 /* Click.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Click.wav; sourceTree = "<group>"; };
-		841A6EE41C72F99F00C24D84 /* clicker.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = clicker.wav; sourceTree = "<group>"; };
-		841A6EE61C74EA2C00C24D84 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		843F4DC91C55FB140082187A /* RCTMapboxGL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTMapboxGL.xcodeproj; path = "../node_modules/react-native-mapbox-gl/ios/RCTMapboxGL.xcodeproj"; sourceTree = "<group>"; };
 		843F4DD71C55FC5F0082187A /* Mapbox.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Mapbox.bundle; path = "../node_modules/react-native-mapbox-gl/ios/RCTMapboxGL/Mapbox.bundle"; sourceTree = "<group>"; };
 		843F4DD91C55FC8F0082187A /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = "../node_modules/react-native-mapbox-gl/ios/RCTMapboxGL/Settings.bundle"; sourceTree = "<group>"; };
@@ -206,7 +198,6 @@
 				843F4DDE1C55FCDD0082187A /* GLKit.framework in Frameworks */,
 				843F4DDC1C55FCCF0082187A /* CoreTelephony.framework in Frameworks */,
 				843F4DD21C55FB5E0082187A /* libRCTMapboxGL.a in Frameworks */,
-				841A6EE71C74EA2C00C24D84 /* GameKit.framework in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
 				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
@@ -356,10 +347,6 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				841A6EE61C74EA2C00C24D84 /* GameKit.framework */,
-				841A6EE41C72F99F00C24D84 /* clicker.wav */,
-				841A6EE01C72F15200C24D84 /* Click.wav */,
-				841A6EDE1C728D5000C24D84 /* fightSong.mp3 */,
 				843F4DEB1C55FD1B0082187A /* libz.tbd */,
 				843F4DE91C55FD130082187A /* libsqlite3.tbd */,
 				843F4DE71C55FD0B0082187A /* libc++.tbd */,
@@ -462,7 +449,7 @@
 						DevelopmentTeam = 88KUCESTNK;
 						SystemCapabilities = {
 							com.apple.GameCenter = {
-								enabled = 1;
+								enabled = 0;
 							};
 						};
 					};
@@ -644,10 +631,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				843F4DDA1C55FC8F0082187A /* Settings.bundle in Resources */,
-				841A6EE11C72F15200C24D84 /* Click.wav in Resources */,
 				843F4DD81C55FC5F0082187A /* Mapbox.bundle in Resources */,
-				841A6EE51C72F99F00C24D84 /* clicker.wav in Resources */,
-				841A6EDF1C728D5000C24D84 /* fightSong.mp3 in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 			);

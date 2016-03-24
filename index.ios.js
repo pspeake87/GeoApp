@@ -2,32 +2,41 @@
 
 'use strict';
 
-var React = require('react-native');
-var Main = require('./Main');
-var Battler = require('./Battler');
+const React = require('react-native');
+const Main = require('./App/Views/Main');
+const Battler = require('./App/Views/Battler');
+const Dispatcher = require('./App/Dispatcher');
+const Constants = require('./App/Constants');
 
-var {
+const {
   AppRegistry,
   StyleSheet,
-  
   View,
-  
 } = React;
 
+const cssVar = require('./App/Lib/cssVar');
 
 
-var GeoApp = React.createClass({
+const GeoApp = React.createClass({
+
+  componentDidMount() {
+
+    var _items = require('./App/Data/Items.js');
+
+    Dispatcher.dispatch({
+      actionType: Constants.ActionTypes.ITEMS_LOADED,
+      _items: _items
+
+    });
+  },
 
 
-  render: function() {
-
-  
+  render() {
    return (
-      <View style={styles.container}>
+      <View style={cssVar('flex')}>
           <Main />    
       </View>
-    );
-  
+    )
   }
 
 });
@@ -35,7 +44,6 @@ var GeoApp = React.createClass({
 var styles = StyleSheet.create({
   container: {
     flex: 1,
-    
   },
 });
 
