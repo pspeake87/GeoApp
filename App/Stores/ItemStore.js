@@ -14,7 +14,7 @@ var _items = {};
 
 var ItemStore = assign({}, EventEmitter.prototype, {
 
-  get: function () {
+  getAll: function () {
     return _items;
   },
 
@@ -38,7 +38,7 @@ ItemStore.dispatchToken = Dispatcher.register(function (payload) {
 
   switch (payload.actionType) {
     case Constants.ActionTypes.ITEMS_LOADED:
-  
+   
     _items = payload.items;
 
     ItemStore.emitChange();

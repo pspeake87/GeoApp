@@ -6,6 +6,7 @@ const MoveView = require('./MoveView');
 const Monsters = require('../Data/Monsters');
 const Moves = require('../Data/Moves');
 const Items = require('../Data/Items');
+
 const Sound = require('react-native-sound');
 
 var click = new Sound('Click.wav', Sound.MAIN_BUNDLE, (error) => {
@@ -67,6 +68,7 @@ module.exports = class Battler extends Component {
 
   componentDidMount() {
 
+  // Fade in screen
     Animated.timing(
       this.state.fadeAnim,
       {
@@ -74,6 +76,8 @@ module.exports = class Battler extends Component {
         duration: 3000,
       },
     ).start();
+
+
 
     setTimeout(() => this.battleSequence(), 4000);
 

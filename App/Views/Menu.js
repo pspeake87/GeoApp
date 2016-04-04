@@ -18,7 +18,7 @@ const Menu = React.createClass({
 
 
   mapButton() {
-    debugger;
+    
     this.props.navigator.pop();
   },
 
@@ -39,7 +39,7 @@ const Menu = React.createClass({
   },
 
   componentDidMount() {
-    debugger;
+    
 
   },
 

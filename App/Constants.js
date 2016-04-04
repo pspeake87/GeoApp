@@ -16,7 +16,8 @@ module.exports = {
   
   ActionTypes: keyMirror({
     ITEMS_LOADED: null,
-    
+    MOVES_LOADED: null,
+    MONSTERS_LOADED: null
   }),
 
  
