@@ -1,19 +1,17 @@
-'use strict';
+import React, {Component, PropTypes } from 'react';
 
-const React = require('react-native');
-const Monsters = require('../Data/Monsters');
-const cssVar = require('../Lib/cssVar');
+import cssVar from '../Lib/cssVar';
 
-const {
-  Component,
-  AppRegistry,
+
+import {
   StyleSheet,
   View,
   Text,
   Animated,
-  Easing,
+  Easing,} from 'react-native'
+const Monsters = require('../Data/Monsters');
 
-  } = React;
+
 
 
 module.exports = class GameEngine extends Component {
@@ -74,4 +72,3 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   }
 });
-

@@ -1,17 +1,13 @@
-'use strict';
+import React, {Component, PropTypes } from 'react';
 
-const React = require('react-native');
-const cssVar = require('../Lib/cssVar');
+import cssVar from '../Lib/cssVar';
 
-const {
-  Component,
-  AppRegistry,
+
+import {
   StyleSheet,
   View,
   Text,
-  TouchableHighlight
-
-  } = React;
+  TouchableHighlight} from 'react-native'
 
 
 module.exports = class MoveView extends Component {

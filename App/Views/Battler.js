@@ -1,23 +1,20 @@
 'use strict';
 
-const React = require('react-native');
+import React, {Component, PropTypes } from 'react';
+
+import cssVar from '../Lib/cssVar';
+
 const GameEngine = require('./GameEngine');
 const MoveView = require('./MoveView');
 const Monsters = require('../Data/Monsters');
 const Moves = require('../Data/Moves');
 const Items = require('../Data/Items');
 
-const Sound = require('react-native-sound');
 
-var click = new Sound('Click.wav', Sound.MAIN_BUNDLE, (error) => {
-  if (error) {
-    console.log('failed to load the sound', error);
-  } else { // loaded successfully
-    debugger;
-  }
-});
 
-const {
+
+
+import {
   AppRegistry,
   StyleSheet,
   Text,
@@ -27,12 +24,11 @@ const {
   Animated,
   Easing,
   ScrollView,
-  Component
 
-  } = React;
+} from 'react-native';
 
 
-module.exports = class Battler extends Component {
+class Battler extends Component {
 
   constructor(props) {
     super(props);
@@ -63,7 +59,7 @@ module.exports = class Battler extends Component {
   }
 
   componentWillMount() {
-    this.playSound();
+
   }
 
   componentDidMount() {
@@ -83,38 +79,7 @@ module.exports = class Battler extends Component {
 
   }
 
-  playSound() {
-    if (this.state.song) {
-      this.state.song.stop();
-      this.setState({song: null});
-    } else {
-      this.state.song = new Sound('fightSong.mp3', Sound.MAIN_BUNDLE, (error) => {
-        if (error) {
-          console.log('failed to load the sound', error);
-        } else { // loaded successfully
-          this.state.song.play((success) => {
-            if (success) {
-              console.log('successfully finished playing');
-            } else {
-              console.log('playback failed due to audio decoding errors');
-            }
-          });
-        }
-      });
 
-
-    }
-  }
-
-  playClick() {
-    click.play((success) => {
-      if (success) {
-        console.log('successfully finished playing');
-      } else {
-        console.log('playback failed due to audio decoding errors');
-      }
-    });
-  }
 
   battleSequence() {
     var random = Math.floor(Math.random() * Monsters.enemy.length);
@@ -458,7 +423,7 @@ module.exports = class Battler extends Component {
     this.setState({moveButtons: ""});
     {this.setState({message: "You ran away"})}
     setTimeout(() => {this.props.navigator.pop()}, 1500);
-    this.playSound();
+
   }
 
   fightOver(defender) {
@@ -469,7 +434,7 @@ module.exports = class Battler extends Component {
     //display message of who died
     //if player loser, message: player must heal
     // if player winner, congratulations! you defeated a "enemy"
-    this.playSound();
+
     setTimeout(() => {this.props.navigator.push({name: 'experience', index: 3})}, 500);
     // experienceScreen
   }
@@ -499,8 +464,8 @@ module.exports = class Battler extends Component {
                 left: 30,
 
                 }}
-                        source={this.state.enemy.avatar}
-                        resizeMode={'contain'}>
+                source={this.state.enemy.avatar}
+                resizeMode={'contain'}>
           {this.attackImage()}
         </Animated.Image>
 
@@ -572,7 +537,7 @@ module.exports = class Battler extends Component {
 
                   alignSelf: 'flex-end',
                   justifyContent: 'center'}}
-                        source={{uri: 'playerHead.png'}}
+                        source={require('../Assets/Images/playerHead.png')}
                         resizeMode={'stretch'}>
           {this.enemyAttackImage()}
         </Animated.Image>
@@ -747,3 +712,4 @@ const styles = StyleSheet.create({
 
 });
 
+export default Battler;

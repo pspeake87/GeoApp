@@ -1,64 +1,46 @@
-'use strict';
+import React, {Component, PropTypes } from 'react';
+import {Actions, Scene, Router} from 'react-native-router-flux';
 
-const Monsters = require('../Data/Monsters');
-const React = require('react-native');
-const Mapbox = require('react-native-mapbox-gl');
-const mapRef = 'mapRef';
-const Sound = require('react-native-sound');
-const cssVar = require('../Lib/cssVar');
+import cssVar from '../Lib/cssVar';
 
-const click = new Sound('clicker.wav', Sound.MAIN_BUNDLE, (error) => {
-  if (error) {
-    console.log('failed to load the sound', error);
-  } else { // loaded successfully 
 
-  }
-});
-
-const {
-  AppRegistry,
+import {
   StyleSheet,
   Text,
   View,
   Image,
   TouchableHighlight,
-  } = React;
-
-const Radar = React.createClass({
-  mixins: [Mapbox.Mixin],
+  MapView} from 'react-native'
 
 
-  getInitialState() {
-    return {
-      zoom: 16,
-      pos: 'unknown',
-      annotations: [],
-      message: "",
+class Radar extends Component {
 
 
-    };
-  },
+  constructor(props) {
+      super(props);
+
+      this.state = {
+          zoom: 16,
+          pos: 'unknown',
+          annotations: [],
+          message: "",
+      }
+
+  }
 
 
-  menuButton: function () {
+  menuButton() {
 
     setTimeout(() => {
       this.props.navigator.push({name: 'menu'})
     }, 500);
 
-  },
+  }
 
-  playClick: function () {
-    click.play((success) => {
-      if (success) {
-        console.log('successfully finished playing');
-      } else {
-        console.log('playback failed due to audio decoding errors');
-      }
-    });
-  },
 
-  scanMonsters: function () {
+
+  scanMonsters() {
+
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -68,25 +50,15 @@ const Radar = React.createClass({
         for (var i = 0; i < 150; i++) {
           if (i % 10 == 0) {
             var pos = {
-              coordinates: [parseFloat((position.coords.latitude - 0.004) + 0.008 * Math.random()), parseFloat((position.coords.longitude - 0.004) + 0.008 * Math.random())],
-              type: "point",
-              annotationImage: {
-                url: 'image!redcross.png',
-                height: 15,
-                width: 15
-              },
-              id: "Healer",
+              latitude: parseFloat((position.coords.latitude - 0.004) + 0.008 * Math.random()),
+              longitude: parseFloat((position.coords.longitude - 0.004) + 0.008 * Math.random()),
+              view: <Image style={{height:15, width: 15}} source={require('../Assets/Images/redcross.png')}/>,
             };
           } else {
             var pos = {
-              coordinates: [parseFloat((position.coords.latitude - 0.004) + 0.008 * Math.random()), parseFloat((position.coords.longitude - 0.004) + 0.008 * Math.random())],
-              type: "point",
-              annotationImage: {
-                url: 'image!radarMarker.png',
-                height: 15,
-                width: 15
-              },
-              id: "Monster" + i,
+              latitude: parseFloat((position.coords.latitude - 0.004) + 0.008 * Math.random()),
+              longitude: parseFloat((position.coords.longitude - 0.004) + 0.008 * Math.random()),
+              view: <Image style={{height:15, width: 15}} source={require('../Assets/Images/radarMarker.png')}/>,
             };
           }
           annotations.push(pos);
@@ -98,10 +70,10 @@ const Radar = React.createClass({
       (error) => alert(error.message),
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
     );
-  },
+  }
 
 
-  findMonster: function () {
+  findMonster() {
 
     function distanceBetweenMarkers(lat1, lon1, lat2, lon2) {
       var R = 6371; // Radius of the earth in km
@@ -132,13 +104,12 @@ const Radar = React.createClass({
 
         for (var i = 0; i < markers.length; i++) {
 
-          if (distanceBetweenMarkers(markers[i].coordinates[0], markers[i].coordinates[1], loc.coords.latitude, loc.coords.longitude) < 25) {
+          if (distanceBetweenMarkers(markers[i].latitude, markers[i].longitude, loc.coords.latitude, loc.coords.longitude) < 25) {
             if (markers[i].id == "Healer") {
               healerfound = true;
               break;
             } else {
               found = true;
-              this.removeAnnotation(mapRef, markers[i].id);
               markers.splice(i, 1);
               break;
             }
@@ -154,7 +125,7 @@ const Radar = React.createClass({
             this.setState({message: "Prepare for an attack..."})
           }, 1000);
           setTimeout(() => {
-            this.props.navigator.push({name: 'battler', index: 2})
+            Actions.battler()
           }, 3000);
         } else if (healerfound) {
           this.setState({message: "I found some food!"});
@@ -163,30 +134,22 @@ const Radar = React.createClass({
           this.setState({message: "I found nothing"});
         }
       });
-  },
+  }
 
-  onPressButton: function () {
+  onPressButton() {
 
-    this.playClick();
-  },
 
-  render: function () {
+  }
+
+  render() {
     return (
       <View style={styles.container}>
-        <Mapbox
+        <MapView
           style={styles.map}
-          ref={mapRef}
-          rotateEnabled={true}
-          scrollEnabled={true}
-          zoomEnabled={true}
           annotations={this.state.annotations}
           showsUserLocation={true}
-          userTrackingMode={this.userTrackingMode.follow}
-          zoomLevel={this.state.zoom}
-          logoIsHidden={false}
-          attributionButtonIsHidden={false}
-          accessToken={'pk.eyJ1IjoicHNwZWFrZTg3IiwiYSI6ImNpam5ybzQwZzAwcmh2YWx4Z2doanZsNzQifQ.bE66sEmpxKNzXwX6no3ixQ'}
-          styleURL={'mapbox://styles/pspeake87/cijoqxspt000i8wkl2fnoixq8'}/>
+          followUserLocation={true}
+          />
 
         <View style={styles.imageBackground}>
 
@@ -202,7 +165,7 @@ const Radar = React.createClass({
             <View style={styles.moveBox}>
               <TouchableHighlight
                 style={styles.buttons}
-                onPress={this.scanMonsters}
+                onPress={this.scanMonsters.bind(this)}
                 onHideUnderlay={this.onPressButton}>
                 <Text style={styles.buttonText}>
                   Scan
@@ -211,7 +174,7 @@ const Radar = React.createClass({
 
               <TouchableHighlight
                 style={styles.buttons}
-                onPress={this.findMonster}
+                onPress={this.findMonster.bind(this)}
                 onHideUnderlay={this.onPressButton}>
                 <Text style={styles.buttonText}>
                   Search
@@ -235,9 +198,10 @@ const Radar = React.createClass({
       </View>
     );
   }
-});
+}
 
-var styles = StyleSheet.create({
+
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
@@ -312,4 +276,4 @@ var styles = StyleSheet.create({
   }
 });
 
-module.exports = Radar;
+export default Radar;
